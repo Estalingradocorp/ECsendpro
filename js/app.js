@@ -162,7 +162,8 @@
             
             const config = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
             
-            html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
+            const doStart = () => {
+                html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
                 let codeToConnect = "";
                 try {
                     if (decodedText.includes('?connect=')) {
@@ -184,7 +185,8 @@
                         const btnManual = document.getElementById('btn-manual');
                         if (btnManual) btnManual.classList.add('hidden');
                     }
-                    document.getElementById('target-code').value = codeToConnect;
+                    const input = document.getElementById('target-code');
+                    if (input) input.value = codeToConnect;
                     
                     const counterEl = document.getElementById('code-counter');
                     if(counterEl) {
@@ -192,7 +194,14 @@
                         counterEl.classList.replace('text-zinc-400', 'text-primary');
                         counterEl.classList.replace('bg-zinc-800', 'bg-primary/20');
                     }
-                    setTimeout(() => window.connectToPeer(), 500);
+                    // Conectar directo por peerId, sin depender del botón/form
+                    setTimeout(() => {
+                        if (peer) {
+                            window.connectToPeerId(PREFIX + codeToConnect);
+                        } else {
+                            window.showToast('Servidor no disponible', 'error');
+                        }
+                    }, 500);
                 }
             }, (errorMessage) => {
                 // Ignore silent errors during scanning
@@ -200,6 +209,14 @@
                 window.showToast("No se pudo acceder a la cámara", "error");
                 window.stopQRScanner();
             });
+            };
+
+            // Si ya estaba escaneando, detener antes de reiniciar para evitar "already running"
+            if (html5QrCode.isScanning) {
+                html5QrCode.stop().catch(() => {}).finally(() => doStart());
+            } else {
+                doStart();
+            }
         };
 
         window.stopQRScanner = () => {

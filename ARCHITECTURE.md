@@ -171,7 +171,7 @@ room.leave();
 
 ## 10. PWA / Service worker (`sw.js`)
 
-- **Caché**: `ecsend-v9` (se sube la versión para purgar caches viejas al activarse).
+- **Caché**: `ecsend-v10` (se sube la versión para purgar caches viejas al activarse).
 - **Estrategias**:
   - `index.html` (navegación): **network-first**, con fallback a `index.html` cacheado (offline).
   - `js/app.js` y `manifest.webmanifest`: **network-first** — siempre baja la última versión online, con fallback a caché offline. Detectados por `pathname` (toleran query strings de cache-busting).

@@ -4,6 +4,15 @@ Todos los cambios notables de ECSend Pro se documentan aquí.
 
 ---
 
+## v8.7 — 2026-09-01
+
+### Fix: conexión por QR
+- **Corregido**: el escaneo de QR ahora conecta **directamente por `peerId`** (`connectToPeerId`) en lugar de pasar por el input/`connectToPeer`, que quedó frágil al introducir el campo manual y el `<form>`. Esto asegura que escanear un QR siempre dispare la conexión.
+- **Fix re-escaneo**: `startQRScanner()` ahora detiene el escáner activo antes de reiniciarlo, evitando el error "already running" de `html5-qrcode` al abrir el escáner más de una vez.
+- Versionado: `app.js` → `?v=15`, caché del service worker → `ecsend-v10`.
+
+---
+
 ## v8.6 — 2026-09-01
 
 ### Chat: copiar mensaje
