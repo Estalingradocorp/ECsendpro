@@ -1600,8 +1600,10 @@ requestAnimationFrame(animateLoader);
                 : "bg-zinc-800 text-zinc-100 rounded-2xl rounded-tl-sm shadow-md border border-white/5";
 
             const bubble = document.createElement('div');
-            bubble.className = `py-2 px-3.5 text-[14px] leading-relaxed break-words ${bubbleClass}`;
+            bubble.className = `py-2 px-3.5 text-[14px] leading-relaxed break-words select-text ${bubbleClass} cursor-pointer transition-opacity active:opacity-60`;
             bubble.textContent = text;
+            bubble.title = "Toca para copiar";
+            bubble.addEventListener('click', () => copyChatMessage(text));
 
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             const meta = document.createElement('div');
@@ -1617,6 +1619,27 @@ requestAnimationFrame(animateLoader);
             if (window.lucide) window.lucide.createIcons();
             container.scrollTop = container.scrollHeight;
         }
+
+        window.copyChatMessage = async function(text) {
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                } else {
+                    const ta = document.createElement("textarea");
+                    ta.value = text;
+                    ta.style.position = "fixed";
+                    ta.style.opacity = "0";
+                    document.body.appendChild(ta);
+                    ta.focus();
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                }
+                window.showToast('Mensaje copiado', 'success');
+            } catch (err) {
+                window.showToast('Error al copiar', 'error');
+            }
+        };
 
         window.updateChatBadge = () => {
             const badge = document.getElementById('chat-badge');

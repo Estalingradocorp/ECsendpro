@@ -4,6 +4,16 @@ Todos los cambios notables de ECSend Pro se documentan aquí.
 
 ---
 
+## v8.6 — 2026-09-01
+
+### Chat: copiar mensaje
+- Cada burbuja del chat es ahora clicable (tap/click) y **copia el mensaje al portapapeles** con confirmación visual (`toast` "Mensaje copiado").
+- Uso del `navigator.clipboard` con fallback a `execCommand('copy')` para navegadores sin contexto seguro.
+- Se habilitó la selección de texto en las burbujas (`select-text`) pese al `select-none` global del cuerpo.
+- Versionado: `app.js` → `?v=14`, caché del service worker → `ecsend-v9`.
+
+---
+
 ## v8.5 — 2026-09-01
 
 ### Fix crítico: modales y botones que bloqueaban los clicks
