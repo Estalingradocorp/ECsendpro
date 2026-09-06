@@ -4,6 +4,17 @@ Todos los cambios notables de ECSend Pro se documentan aquí.
 
 ---
 
+## v8.9 — 2026-09-01
+
+### Migración del repositorio
+- **Nuevo repo destino**: `https://github.com/Estalingradocorp/ECsendpro.git` (público, vacío).
+- **Remote `origin` actualizado**: apunta al repo nuevo. El repo anterior era `nicotips27/ECwebSend`.
+- **Estado**: el código está listo y commiteado en `main` (`e73c72a` o posterior). Falta el `git push` al repo nuevo una vez que las credenciales de git apunten a una cuenta con acceso a la organización `Estalingradocorp` (el push con `nicotips27` devuelve 403 sin permisos).
+- **Deploy**: la página se activa en GitHub Pages desde el repo nuevo (Settings → Pages → deploy desde `main`). El archivo `.nojekyll` y `404.html` ya están en la raíz para el correcto funcionamiento de GitHub Pages.
+- **El repo viejo** (`nicotips27/ECwebSend`) puede borrarse después de confirmar que el nuevo queda desplegado.
+
+---
+
 ## v8.8 — 2026-09-01
 
 ### Fix: conexión por QR en PC (Brave) y cierre del escáner

@@ -2,7 +2,7 @@
 
 Transferencia de archivos P2P (peer-to-peer) entre dispositivos directamente desde el navegador, sin subir nada a ningún servidor. Interfaz móvil oscura con chat privado cifrado, escaneo de QR, descubrimiento automático de dispositivos en la misma red e historial local.
 
-**Demo:** https://nicotips27.github.io/ECwebSend/
+**Demo:** https://estalingradocorp.github.io/ECsendpro/
 
 ---
 
@@ -44,14 +44,15 @@ La barra de navegación inferior solo muestra **INICIAR / RECIBIR / ENVIAR**.
 
 ## Publicidad
 
-La app muestra banners publicitarios de **Estalingrado Market** que al hacer click abren `https://estalingradocorp.github.io/EstalingradoCorp/market.html` en una pestaña nueva:
+La app muestra el banner de **Estalingrado Market** (único, en el modal de transferencia) que al hacer click abre `https://estalingradocorp.github.io/EstalingradoCorp/market.html` en una pestaña nueva:
 
 | Ubicación | GIF |
 |---|---|
-| Vista de inicio (entre "Mi Código" y "Conectarse a dispositivo") | `9dbdc2_d7f4662631574a52ada08bdf9d4cfcb8~mv2.gif` |
 | Modal de transferencia (mientras se pasan archivos) | `9dbdc2_23a9d1da1ade40809dc9afbaee74d186~mv2.gif` |
 
-Ambos usan `target="_blank" rel="noopener nofollow"`.
+Usa `target="_blank" rel="noopener nofollow"`.
+
+> **Nota:** el banner de la vista de inicio fue retirado en v8.1.
 
 ---
 
@@ -123,11 +124,9 @@ Abrir `http://localhost:8080` en dos pestañas/dispositivos de la misma red para
 
 ## Deploy en GitHub Pages
 
-El sitio se publica desde la rama `main` (raíz del repo): **Settings → Pages → Branch: main / root**. Cada push a `main` actualiza el sitio automáticamente.
+El sitio se publica desde la rama `main` (raíz del repo): **Settings → Pages → Branch: main / root**. Cada push a `main` actualiza el sitio automáticamente. La publicación actual corresponde al repo `Estalingradocorp/ECsendpro`.
 
 ```bash
-git add -A
-git commit -m "mensaje"
 git push origin main
 ```
 
