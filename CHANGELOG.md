@@ -4,6 +4,18 @@ Todos los cambios notables de ECSend Pro se documentan aquí.
 
 ---
 
+## v8.8 — 2026-09-01
+
+### Fix: conexión por QR en PC (Brave) y cierre del escáner
+- **Espera a que el peer esté listo**: `connectToPeerId` ahora verifica que `peer.open` sea `true` antes de intentar `peer.connect()`. Si no, espera (hasta 6 s) reintentando, evitando el fallo de conectar antes de que el peer esté registrado en PeerJS Cloud (causa común del "la red tarda demasiado").
+- **Reconexión automática**: si el peer quedó `disconnected` del broker, se llama `peer.reconnect()` antes de conectar.
+- **Timeout más largo**: el aviso "la red está demorando" pasa de 6 s a 10 s.
+- **Cámara correcta en desktop**: el escáner QR usa `facingMode: "user"` (delantera) en PC y `"environment"` (trasera) en móvil, evitando que en Brave/PC no encuentre cámara.
+- **Cierre robusto del escáner**: `stopQRScanner()` ahora siempre oculta el modal (añade `hidden` y quita `flex`) además de detener la cámara.
+- Versionado: `app.js` → `?v=16`, caché del service worker → `ecsend-v11`.
+
+---
+
 ## v8.7 — 2026-09-01
 
 ### Fix: conexión por QR

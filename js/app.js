@@ -162,8 +162,11 @@
             
             const config = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
             
+            // En desktop usar la cámara delantera/disponible; en móvil la trasera
+            const isDesktop = !/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            
             const doStart = () => {
-                html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
+                html5QrCode.start({ facingMode: isDesktop ? "user" : "environment" }, config, (decodedText) => {
                 let codeToConnect = "";
                 try {
                     if (decodedText.includes('?connect=')) {
@@ -220,7 +223,11 @@
         };
 
         window.stopQRScanner = () => {
-            document.getElementById('modal-scanner').classList.add('hidden');
+            const modal = document.getElementById('modal-scanner');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
             if (html5QrCode && html5QrCode.isScanning) {
                 html5QrCode.stop().catch(err => console.error(err));
             }
@@ -856,32 +863,74 @@ requestAnimationFrame(animateLoader);
             input.disabled = true;
             if (window.lucide) window.lucide.createIcons();
 
-            const conn = peer.connect(targetPeerId, { reliable: true });
-            
-            // Timeout de aviso si tarda demasiado
-            const connectionTimeout = setTimeout(() => {
-                if (btn.disabled) window.showToast('La red está demorando. Espera o recarga la página...', 'info');
-            }, 6000);
+            const tryConnect = () => {
+                let conn;
+                try {
+                    conn = peer.connect(targetPeerId, { reliable: true });
+                } catch (e) {
+                    window.showToast('Fallo al enlazar. Por favor, recarga la página.', 'error');
+                    resetConnectionUI();
+                    return;
+                }
+                if (!conn) {
+                    window.showToast('Fallo al enlazar. Por favor, recarga la página.', 'error');
+                    resetConnectionUI();
+                    return;
+                }
 
-            conn.on('error', (err) => {
-                clearTimeout(connectionTimeout);
-                window.showToast('Fallo al enlazar. Por favor, recarga la página.', 'error');
-                resetConnectionUI();
-            });
+                // Timeout de aviso si tarda demasiado
+                const connectionTimeout = setTimeout(() => {
+                    if (btn.disabled) window.showToast('La red está demorando. Espera o recarga la página...', 'info');
+                }, 10000);
 
-            conn.on('close', () => {
-                clearTimeout(connectionTimeout);
-                if (btn.disabled) resetConnectionUI();
-            });
+                conn.on('error', (err) => {
+                    clearTimeout(connectionTimeout);
+                    window.showToast('Fallo al enlazar. Por favor, recarga la página.', 'error');
+                    resetConnectionUI();
+                });
 
-            conn.on('open', () => {
-                clearTimeout(connectionTimeout);
-                input.disabled = false;
-                setupConnection(conn);
-                window.showToast('¡Enlazado exitosamente!', 'success');
-                updateUIConnected();
-                try { conn.send(JSON.stringify({ type: 'handshake', username: appSettings.username, isApple: /iPad|iPhone|iPod|Mac/i.test(navigator.userAgent) })); } catch(e){}
-            });
+                conn.on('close', () => {
+                    clearTimeout(connectionTimeout);
+                    if (btn.disabled) resetConnectionUI();
+                });
+
+                conn.on('open', () => {
+                    clearTimeout(connectionTimeout);
+                    input.disabled = false;
+                    setupConnection(conn);
+                    window.showToast('¡Enlazado exitosamente!', 'success');
+                    updateUIConnected();
+                    try { conn.send(JSON.stringify({ type: 'handshake', username: appSettings.username, isApple: /iPad|iPhone|iPod|Mac/i.test(navigator.userAgent) })); } catch(e){}
+                });
+            };
+
+            // Esperar a que el peer esté abierto antes de conectar (evita fallos por peer no listo)
+            const ensureAndConnect = () => {
+                if (peer.disconnected && !peer.destroyed) {
+                    // El peer se desconectó del broker PeerJS Cloud; reconectar antes de conectar
+                    try { peer.reconnect(); } catch (e) {}
+                    setTimeout(tryConnect, 800);
+                } else {
+                    tryConnect();
+                }
+            };
+
+            if (peer.open) {
+                ensureAndConnect();
+            } else {
+                let waited = 0;
+                const waitForOpen = setInterval(() => {
+                    if (peer.open) {
+                        clearInterval(waitForOpen);
+                        ensureAndConnect();
+                    } else if (waited >= 6000) {
+                        clearInterval(waitForOpen);
+                        window.showToast('Servidor aún no está listo. Recargá la página.', 'error');
+                        resetConnectionUI();
+                    }
+                    waited += 500;
+                }, 500);
+            }
         };
 
         // --- DESCUBRIMIENTO EN LA MISMA RED (ESTILO LOCALSEND) ---
