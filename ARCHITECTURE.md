@@ -35,6 +35,8 @@ Documentación técnica del funcionamiento interno de ECSend Pro. Es una **SPA d
 PeerJS abstrae el intercambio SDP/ICE. Cada dispositivo es un peer registrado en el **PeerJS Cloud broker** con su peer ID `ecsend-XXXXXX`.
 
 - **Conectar** (`connectToPeer` / `connectToPeerId`): el emisor llama `peer.connect(targetId, { reliable: true })`. Usa `reliable: true` para DataChannel ordenado y sin pérdida (necesario para transferencias).
+- **Conexión por QR**: al escanear un QR válido, `startQRScanner` conecta **directamente por `peerId`** (`connectToPeerId(PREFIX + código)`), sin depender del input ni del botón del formulario. `connectToPeerId` espera a que `peer.open` sea `true` (reintenta hasta 6 s) y, si el peer quedó `disconnected` del broker, llama `peer.reconnect()` antes de conectar. El aviso "la red está demorando" se muestra a los 10 s.
+- **Escáner QR (`startQRScanner`/`stopQRScanner`)**: usa `facingMode: "user"` (delantera) en desktop y `"environment"` (trasera) en móvil. Si el escáner ya estaba activo se detiene antes de reiniciar (evita "already running"). `stopQRScanner` siempre oculta el modal y detiene la cámara.
 - **Recibir**: `peer.on('connection')` acepta la conexión entrante.
 - **Reconexión**: `peer.on('disconnected')` y un listener de `visibilitychange` reintentan (`peer.reconnect()`) cuando la pestaña vuelve al frente (p. ej. al volver de WhatsApp).
 - **ICE STUN**: en modo `global` se usan `stun.l.google.com:19302` y `global.stun.twilio.com:3478`. En modo `local` (`network: 'local'`) **no** hay STUN → la conexión se fuerza por la LAN.
