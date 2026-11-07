@@ -34,9 +34,10 @@ Transferencia de archivos P2P (peer-to-peer) entre dispositivos directamente des
 
 Al tocar el logo (arriba a la izquierda) se abre el menú principal con:
 
-- **Ajustes** — submenú expandible con todos los ajustes de la app.
-- **Tráfico en tiempo real (Big-Data)** — abre en pestaña nueva.
-- **Saber más** — enlaza a EstalingradoCorp en pestaña nueva.
+- **Ajustes** — submenú expandible con todos los ajustes de la app (nombre, modo de conexión, descubrimiento, sonidos, fondo dinámico, ECEncripP2P, ruta de descarga, borrar datos y política de privacidad).
+- **Tráfico en tiempo real (Big-Data)** — abre en pestaña nueva: https://estalingradocorp.com.ar/BigData/Bigdata.html
+- **Saber más** — abre en pestaña nueva: https://estalingradocorp.com.ar/empresa.html
+- **Soporte** — abre en pestaña nueva: https://estalingradocorp.com.ar/soporte/soporte.html
 
 La barra de navegación inferior solo muestra **INICIAR / RECIBIR / ENVIAR**.
 
@@ -140,6 +141,18 @@ git push origin main
 - Historial y ajustes viven únicamente en el dispositivo (`localStorage`).
 - El descubrimiento publica tu nombre aleatorio en la sala de tu red (desactivable).
 - El software se provee "tal cual"; el usuario es responsable de lo que comparte.
+
+---
+
+## Enlaces oficiales
+
+| Destino | URL |
+|---|---|
+| App (Demo / GitHub Pages) | https://estalingradocorp.github.io/ECsendpro/ |
+| Repo | https://github.com/Estalingradocorp/ECsendpro |
+| Tráfico en tiempo real (Big-Data) | https://estalingradocorp.com.ar/BigData/Bigdata.html |
+| Empresa / Saber más | https://estalingradocorp.com.ar/empresa.html |
+| Soporte | https://estalingradocorp.com.ar/soporte/soporte.html |
 
 ---
 

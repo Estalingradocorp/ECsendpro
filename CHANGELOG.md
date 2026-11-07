@@ -4,6 +4,17 @@ Todos los cambios notables de ECSend Pro se documentan aquí.
 
 ---
 
+## v9.0 — 2026-11-07
+
+### Menú desplegable — nuevos destinos oficiales
+- **Tráfico en tiempo real (Big-Data)**: ahora enlaza a `https://estalingradocorp.com.ar/BigData/Bigdata.html` (antes `nicotips27.github.io/ec-Intra-net/`).
+- **Saber más**: ahora enlaza a `https://estalingradocorp.com.ar/empresa.html` (antes `estalingradocorp.github.io/EstalingradoCorp/`).
+- **Nuevo botón Soporte** en el menú (icono `life-buoy`): `https://estalingradocorp.com.ar/soporte/soporte.html`. Los tres abren en pestaña nueva (`target="_blank"`).
+- **README** actualizado (sección Menú desplegable + tabla Enlaces oficiales).
+- Versionado: caché del service worker → `ecsend-v12`.
+
+---
+
 ## v8.9 — 2026-09-01
 
 ### Migración del repositorio
